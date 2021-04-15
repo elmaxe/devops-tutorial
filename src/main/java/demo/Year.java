@@ -18,6 +18,8 @@ public class Year {
             return ":sunglasses:";
         case 1984:
             return "You never felt alone";
+        case 1987:
+            return "https://www.youtube.com/watch?v=dQw4w9WgXcQ";
         case 2020:
             return "Sad year :(";
         default:
