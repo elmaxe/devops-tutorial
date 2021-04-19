@@ -1,6 +1,6 @@
 import unittest
-import random
 from src.app import some_func
+
 
 class TestApp(unittest.TestCase):
     "Blabla"
