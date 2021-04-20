@@ -4,6 +4,8 @@ default = ["Meh", "Boring", "What about it?", "Nothing special"]
 present = 2021
 
 def review(year):
+    if not isinstance(year, int):
+        raise TypeError("Expected int, received {x}".format(x = type(year).__name__))
     if year > present:
         raise ValueError("Can't review a year that has not happened yet (year > {x})".format(x = present))
     if year == 0:

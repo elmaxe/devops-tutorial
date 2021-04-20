@@ -22,5 +22,9 @@ class TestApp(unittest.TestCase):
         with self.subTest(msg="year = 2020"):
             self.assertEqual(review(2020), "Sad year :(")
         
+    def test_review_invalid_type_raise(self):
+        self.assertRaises(TypeError, review, "42")
+        self.assertRaises(TypeError, review, 42.3)
+
     def test_review_future_year_raise(self):
         self.assertRaises(ValueError, review, present + 1)
