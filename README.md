@@ -1,15 +1,18 @@
-# CI for Python with unittest using Github Actions
+# CI for Python with unittest using GitHub Actions
 
 # Introduction
 
-In this tutorial you will learn how to set up a basic CI workflow for Python with Github Actions. You will learn how to set up unit tests and create an automated Github workflow that runs on pushes and pull requests to the master branch. The workflow will test and lint the code.
+In this tutorial you will learn how to set up a basic CI workflow for Python with GitHub Actions. You will learn how to set up unit tests and create an automated GitHub workflow that runs on pushes and pull requests to the master branch. The workflow will test and lint the code.
 
 ## What is unittest?
-Unittest is a unit testing capable module in Python’s standard library. 
+Unittest is a unit testing capable module in Python’s standard library.
+
 ## What is flake8?
 Flake8 is a tool to lint your code, in other words make sure it follows a certain style convention, which can be customized in any way you want.
-## What is “Github actions”?
-Github actions automates your CI/CD workflows. You can build, test and deploy your code right on Github. In this tutorial we will use Github Actions to automatically lint the code and run unit tests when you push to master or create a pull request to the master branch.
+
+## What is GitHub Actions?
+GitHub Actions automates your CI/CD workflows. You can build, test and deploy your code right on GitHub. In this tutorial we will use GitHub Actions to automatically lint the code and run unit tests when you push to master or create a pull request to the master branch.
+
 ## Prerequisites
 This tutorial is written for and intended to run on Ubuntu/Windows 10
 - Python 3.8
@@ -21,19 +24,19 @@ Start by setting up the file structure of the project. The structure will look l
 example_project/
 ├── .github/
 |    └── workflows/          
-|    	    └── ci.yml     Github Action configuration.
-├── src/                 Python package with source code.
-|    ├── __init__.py     Makes the folder a package.
-|    └── app.py          Example module.
-├── test/                Python package with source code.
-|    ├── __init__.py     Makes the folder a package.
-|    └── test_app.py     Example test module.
+|    	    └── ci.yml   GitHub Action configuration.
+├── src/                  Python package with source code.
+|    ├── __init__.py      Makes the folder a package.
+|    └── app.py           Example module.
+├── test/                 Python package with source code.
+|    ├── __init__.py      Makes the folder a package.
+|    └── test_app.py      Example test module.
 ├── requirements.txt
 ├── .gitignore
-└── README.md            README with info of the project.
+└── README.md             README with info of the project.
 ```
 
-Create the `src`- and `test`-folders. These will hold our source code and our unit tests respectively. Make sure to create an empty `__init__.py` file in both folders. This file creates a module from the folder it is resided in, which makes us able to import functions. When writing unit tests we would for example like to import functions from `src/` and use them in unit tests.
+Create the `src` and `test` folders. These will hold our source code and our unit tests respectively. Make sure to create an empty `__init__.py` file in both folders. This file creates a module from the folder it is resided in, which makes us able to import functions. When writing unit tests we would for example like to import functions from `src/` and use them in unit tests.
 
 For the next step, we will provide some examples of source code and their unit tests. Create `app.py` and paste the following code:
 ```python
@@ -88,7 +91,7 @@ class TestApp(unittest.TestCase):
             self.assertEqual(review(1987), "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
         with self.subTest(msg="year = 2020"):
             self.assertEqual(review(2020), "Sad year :(")
-        
+
     def test_review_invalid_type_raise(self):
         self.assertRaises(TypeError, review, "42")
         self.assertRaises(TypeError, review, 42.3)
@@ -106,9 +109,9 @@ There are many different ways to design your unit tests. We have used three diff
 - `assertRaises` tests that an error is raised. We use it to test that `review` raises an error when inputting something other than an integer as argument to the function and to check that you’re not reviewing a year greater than the current year.
 
 ## Sub tests
-When creating unit tests, it is common to insert many asserts into one function, making that function contain a lot of asserts. If one of these assertions would fail, `unittest` wouldn’t tell us which of these many asserts did fail, it would instead only tell us in what function the error occurred. Sub tests solve this problem. By dividing the test into sub tests, `unittest` will tell you specifically which assertion failed, making it easier to see what went wrong. We implemented subtests in the `test_review_should_not_return_default` function. 
+When creating unit tests, it is common to insert many asserts into one function, making that function contain a lot of asserts. If one of these assertions would fail, `unittest` wouldn’t tell us which of these many asserts did fail, it would instead only tell us in what function the error occurred. Sub tests solve this problem. By dividing the test into sub tests, `unittest` will tell you specifically which assertion failed, making it easier to see what went wrong. We implemented subtests in the `test_review_should_not_return_default` function.
 
-# Misc files
+## Misc files
 Before we are done, create two more files in the root of the project: `requirements.txt` and `.gitignore`. In the `.gitignore`, paste `__pycache__` so that git won’t keep track of changes to these folders.
 
 `requirements.txt` is a file that lists what dependencies a Python project has. These dependencies can then be installed with `pip install -r requirements.txt`. In our case, we only have one dependency: `flake8`. Type that into `requirement.txt` and save it.
@@ -159,7 +162,7 @@ jobs:
       run: python -m unittest
 ```
 
-If you are unfamiliar with the YAML syntax and GitHub actions, do not be scared by all this text. We will explain the content of the file in the following sections.
+If you are unfamiliar with the YAML syntax and GitHub Actions, do not be scared by all this text. We will explain the content of the file in the following sections.
 
 ## Name the workflow
 We define a name for our workflow with the name keyword. To give the workflow the name “CI”, you write:
@@ -174,7 +177,7 @@ Since we want to test new code, we would only really want to build and test when
 ```yml
 on: [push, pull_request]
 ```
-If we have multiple branches and only want our CI workflow to run when there are new things on a specific branch, we could instead rewrite the on value to:
+If we have multiple branches and only want our CI workflow to run when there are new things on a specific branch, we could instead rewrite the `on` value to:
 ```yml
 on:
   push:
@@ -182,10 +185,10 @@ on:
   pull_request:
     branches: [ master ]
 ```
-It is possible to add multiple branches to the branches list, and also possible to add other restrictions for the on value. You can read more about the on workflow syntax here.
+It is possible to add multiple branches to the branches list, and also possible to add other restrictions for the `on` value. You can read more about the `on` workflow syntax [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on).
 
 ## Define jobs in the workflow
-A workflow can consist of one or more jobs. These jobs will run in their own environments and will therefore not share any data. However, it is possible to configure jobs to be dependent on the status of other jobs. To define jobs in our workflow we use the jobs keyword. The basic syntax for this keyword is
+A workflow can consist of one or more jobs. These jobs will run in their own environments and will therefore not share any data. However, it is possible to configure jobs to be dependent on the status of other jobs. To define jobs in our workflow we use the `jobs` keyword. The basic syntax for this keyword is
 ```yml
 jobs:
     <job1 id>:
@@ -195,11 +198,13 @@ jobs:
     ⋮
 ```
 As id we can write any string containing only alphabetical characters, `-` or `_`. If you define multiple jobs inside the `jobs` environment, you must make sure they get unique ids. In our workflow we have defined a single job with the id `test`.
-The `<job specification>` consists of multiple key-value pairs. First, we use the `runs-on` keyword to specify the OS that should be used by GitHub when running the job. We want to use ubuntu, and therefore add
+
+The `<job specification>` consists of multiple key-value pairs. First, we use the `runs-on` keyword to specify the OS that should be used by GitHub when running the job. We want to use Ubuntu, and therefore add
 ```yml
 runs-on: ubuntu-latest
 ```
-to our `<job specification>`. You can find a full list of possible OSs here.
+to our `<job specification>`. You can find a full list of possible OSs [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idruns-on).
+
 To define the actions that should be executed in the job, we use the `steps` keyword. The general syntax for this keyword is:
 ```yml
 steps:
@@ -208,9 +213,9 @@ steps:
     ⋮
 ```
 The `<step specification>` also consists of multiple key-value pairs. There are three important keywords here:
-- `name`: specify the name of the step
-- `uses`: specify that a predefined action should be executed during the step
-- `run`: specify specific commands that should be executed during the step
+- `name` -  specify the name of the step
+- `uses` -  specify that a predefined action should be executed during the step
+- `run` - specify specific commands that should be executed during the step
 
 In our test job we will perform the following steps:
 1. Clone the repo
@@ -220,13 +225,13 @@ In our test job we will perform the following steps:
 5. Run the tests
 
 ### Clone the repo
-For the job to get access to the code in our repo we use the action `actions/checkout`. This will fetch the repo in the state it had when the event that triggered the workflow occured. To specify that we want to use the latest version of the action, version 2, we specify the step as:
+For the job to get access to the code in our repo we use the action [`actions/checkout`](https://github.com/actions/checkout). This will fetch the repo in the state it had when the event that triggered the workflow occured. To specify that we want to use the latest version of the action, version 2, we specify the step as:
 ```yml
 - uses: actions/checkout@v2
 ```
 
 ### Install Python
-To install Python in our job environment we use the action `actions/setup-python`. When using this action we must specify the python version to use. This is done with the `with` keyword. We can specify a step that installs Python version 3.8 as:
+To install Python in our job environment we use the action [`actions/setup-python`](https://github.com/actions/setup-python). When using this action we must specify the Python version to use. This is done with the `with` keyword. We can specify a step that installs Python version 3.8 as:
 
 ```yml
 - name: Set up Python
@@ -235,7 +240,7 @@ To install Python in our job environment we use the action `actions/setup-python
         python-version: 3.8
 ```
 #### Multiple Python version
-If you want to support multiple python versions (e.g. 3.8 and 3.7) and want to test all of them, it is possible to add
+If you want to support multiple Python versions (e.g. 3.8 and 3.7) and want to test all of them, it is possible to add
 ```yml
 strategy:
       matrix:
@@ -248,10 +253,10 @@ to the job specification. Then we can modify the “Set Up Python” step to gen
       with:
         python-version: ${{ matrix.python-version }}
 ```
-With this setup, GitHub will launch one job for each python version. You can read more about the strategy and matrix keywords here.
+With this setup, GitHub will launch one job for each Python version. You can read more about the `strategy` and `matrix` keywords [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 
 ### Install dependencies
-To install the dependencies we use `pip`, a package installer for Python. We install pip with `python -m pip install --upgrade pip`, and then install the project dependencies by running `pip install -r requirements.txt`, which will install all modules defined in `requirements.txt`. 
+To install the dependencies we use [`pip`](https://pypi.org/project/pip/), a package installer for Python. We install pip with `python -m pip install --upgrade pip`, and then install the project dependencies by running `pip install -r requirements.txt`, which will install all modules defined in `requirements.txt`.
 ```yml
     - name: Install dependencies
       run: |
