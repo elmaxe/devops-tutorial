@@ -24,7 +24,7 @@ Start by setting up the file structure of the project. The structure will look l
 example_project/
 ├── .github/
 |    └── workflows/          
-|    	    └── ci.yml   GitHub Action configuration.
+|    	    └── ci.yml    GitHub Action configuration.
 ├── src/                  Python package with source code.
 |    ├── __init__.py      Makes the folder a package.
 |    └── app.py           Example module.
