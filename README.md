@@ -131,13 +131,12 @@ Run `flake8 .` to see that flake8 is installed and runs on your code. Flake8 wil
 
 If everything ran successfully you can push the code to your repo, and you are ready to go to the next step: creating a pipeline that does these things automatically for you.
 
-> **Note:** If you have multiple Python version on your computer, you may run into problems when you run these commands. In that case, you need to specify which Python version you use when running the commands. Therefore, run the following commands instead
-```
-<python> -m pip install -r requirements.txt
-<python> -m unittest
-<python> -m flake8 .
-```
-where you substitute `<python>` with `python3` on Ubuntu and `py -3.8` on Windows.
+> **Note:** If you have multiple Python version on your computer, you may run into problems when you run these commands. In that case, you need to specify which Python version you use when running the commands. This is done by instead running:
+> - `<python> -m pip install -r requirements.txt`
+> - `<python> -m unittest`
+> - `<python> -m flake8 .`
+> 
+> where you substitute `<python>` with `python3` on Ubuntu and `py -3.8` on Windows.
 
 # Step 3 - Configure CI pipeline with GitHub Actions
 GitHub looks for definitions of GitHub Actions in a directory named `.github/workflows` in your repo. Therefore, you need to create such a directory and in that directory create a YAML file defining a new GitHub Actions workflow. You can name this to whatever you like, we chose `ci.yml`. The final version of the file includes the following:
