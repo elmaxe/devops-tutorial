@@ -135,7 +135,7 @@ If everything ran successfully you can push the code to your repo, and you are r
 > - `<python> -m pip install -r requirements.txt`
 > - `<python> -m unittest`
 > - `<python> -m flake8 .`
-> 
+>
 > where you substitute `<python>` with `python3` on Ubuntu and `py -3.8` on Windows.
 
 # Step 3 - Configure CI pipeline with GitHub Actions
@@ -301,7 +301,7 @@ The tests are run with `python -m unittest`. Hence, a step running the tests can
 ```
 
 # Step 4 - Check that everything works
-If you push all the files we have written in the previous steps to your GitHub repo, your new workflow should be triggered. If you open the repo and go to the "Actions" tab, your CI workflow should be listed. If you click on it, you should be able to see that your it is running and get access to its logs.
+If you push all the files we have written in the previous steps to your GitHub repo, your new workflow should be triggered. If you open the repo and go to the "Actions" tab, your CI workflow should be listed. If you click on it, you should be able to see that it is running and get access to its logs.
 
 **Congratulations!** :star2:
 
