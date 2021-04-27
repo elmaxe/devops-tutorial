@@ -103,16 +103,18 @@ class TestApp(unittest.TestCase):
         self.assertRaises(ValueError, review, present + 1)
 ```
 
-This file can sure look a bit complicated if you are not used to unit tests. First and foremost we import the `unittest` library so that we can use its functions. After that we create a class that extends the `unittest.TestCase` class. All unit test functions in this class must have names beginning with `test` in order for unittest to recognize them as unit tests. The class contains four different unit tests that test the review function in different ways.
+This file can surely look a bit complicated if you are not used to unit tests. First and foremost, we import the `unittest` library so that we can use its functions. After that we create a class that extends the `unittest.TestCase` class. All unit test functions in this class must have names beginning with `test` in order for unittest to recognize them as unit tests. The class contains four different unit tests that test the review function in different ways.
 
 There are many different ways to design your unit tests. We have used three different kinds of assertions: `assertEqual`, `assertRaises` and `assertIn`, but there are many more you can use. If you are interested, read the [unittest documentation](https://docs.python.org/3/library/unittest.html).
 
-- `assertEqual` tests that a value is equal to a specific value, in our case we use it to check that when we review a specific year we get the correct string output returned to us.
+- `assertEqual` tests that a value is equal to a specific value, in our case we use it to check that when we review a specific year, we get the correct string output returned to us.
 - `assertIn` tests that the provided value is in the provided array. This can be used when you want to accept different answers, in our case when we want to accept any default answer from the review function.
 - `assertRaises` tests that an error is raised. We use it to test that `review` raises an error when inputting something other than an integer as argument to the function and to check that you’re not reviewing a year greater than the current year.
 
 ### Sub tests
-When creating unit tests, it is common to insert many assertions into one function, making that function contain a lot of assertions. If one of these assertions would fail, `unittest` wouldn’t tell us which of them failed. Instead, it would only tell us in what test function the error occurred. Sub tests solve this problem. By dividing the test into sub tests, `unittest` will tell you specifically which assertion failed, making it easier to see what went wrong. We implemented subtests in the `test_review_should_not_return_default` function.
+When creating unit tests, it is common to insert many assertions into one test function, making that function contain a lot of assertions. If one of these assertions would fail, `unittest` aborts the execution of that test function. Therefore we wouldn't know whether the following assertions in the same test function would pass or not. Sub tests solve this problem. By dividing the test into sub tests, `unittest` will run all sub tests, regardless if any of them fail.
+
+We implemented subtests in the `test_review_should_not_return_default` function.
 
 ## Misc files
 Before we are done, create two more files in the root of the project: `requirements.txt` and `.gitignore`. In the `.gitignore`, paste `__pycache__` so that git won’t keep track of changes to these folders.
@@ -129,7 +131,7 @@ Run `python -m unittest` to run the unit tests. If everything is set up correctl
 
 Run `flake8 .` to see that flake8 is installed and runs on your code. Flake8 will probably give you some errors and warnings about the format of your code.
 
-If everything ran successfully you can push the code to your repo, and you are ready to go to the next step: creating a pipeline that does these things automatically for you.
+If everything runs successfully you can push the code to your repo, and you are ready to go to the next step: creating a pipeline that does these things automatically for you.
 
 > **Note:** If you have multiple Python version on your computer, you may run into problems when you run these commands. In that case, you need to specify which Python version you use when running the commands. This is done by instead running:
 > - `<python> -m pip install -r requirements.txt`
@@ -201,6 +203,8 @@ on:
     branches: [ master ]
 ```
 This is the configuration used in our YAML file. It is possible to add multiple branches to the `branches` list, and also possible to add other restrictions for the `on` value. You can read more about the `on` workflow syntax [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#on).
+
+> **Note:** GitHub recently changed the default branch name to `main` instead of `master`. Depending on how your repo is setup, the default branch could either be called `main` or `master`. The value in the `branches` list should be changed accordingly.
 
 ## Define jobs in the workflow
 A workflow can consist of one or more jobs. These jobs will run in their own environments and will therefore not share any data. However, it is possible to configure jobs to be dependent on the status of other jobs. To define jobs in our workflow we use the `jobs` keyword. The basic syntax for this keyword is:
@@ -301,8 +305,11 @@ The tests are run with `python -m unittest`. Hence, a step running the tests can
 ```
 
 # Step 4 - Check that everything works
-If you push all the files we have written in the previous steps to your GitHub repo, your new workflow should be triggered. If you open the repo and go to the "Actions" tab, your CI workflow should be listed. If you click on it, you should be able to see that it is running and get access to its logs.
+If you push all the files we have written in the previous steps to your GitHub repo, your new workflow should be triggered. If you open the repo and go to the Actions-tab, your CI workflow should be listed. If you click on it, you should be able to see that it is running and get access to its logs.
 
-**Congratulations!** :star2:
+> **Note:** If you fork this repository, you will first have to click the "I understand my workflows, go ahead and enable them" button in the Actions-tab before the action will work.
+![](res/actions_tab.png)
+
+#### **Congratulations!** :star2:
 
 You have now completed the tutorial.
