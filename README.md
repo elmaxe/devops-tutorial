@@ -2,7 +2,7 @@
 
 # Introduction
 
-In this tutorial you will learn how to set up a basic CI workflow for Python with GitHub Actions. You will learn how to set up unit tests and create an automated GitHub workflow that runs on pushes and pull requests to the master branch. The workflow will test and lint the code.
+In this tutorial you will learn how to set up a basic CI workflow for Python with GitHub Actions. You will learn how to set up unit tests and create an automated GitHub workflow that runs on pushes and pull requests to the master branch. The workflow will use unittest and flake8 to test and lint the code.
 
 ## What is unittest?
 Unittest is a unit testing capable module in Python’s standard library.
@@ -112,7 +112,7 @@ There are many different ways to design your unit tests. We have used three diff
 - `assertRaises` tests that an error is raised. We use it to test that `review` raises an error when inputting something other than an integer as argument to the function and to check that you’re not reviewing a year greater than the current year.
 
 ### Sub tests
-When creating unit tests, it is common to insert many assertions into one test function, making that function contain a lot of assertions. If one of these assertions would fail, `unittest` aborts the execution of that test function. Therefore we wouldn't know whether the following assertions in the same test function would pass or not. Sub tests solve this problem. By dividing the test into sub tests, `unittest` will run all sub tests, regardless if any of them fail.
+When creating unit tests, it is common to insert many assertions into one test function, making that function contain a lot of assertions. If one of these assertions would fail, `unittest` aborts the execution of that test function. Therefore, we wouldn't know whether the remaining assertions in the same test function would pass or not. Sub tests solve this problem. By dividing the assertions of a test into sub tests, `unittest` will run them all, regardless of whether some of them fail or not. We therefore get to know the status of all the assertions, and not just the status of the assertions up until the first failure.
 
 We implemented subtests in the `test_review_should_not_return_default` function.
 
@@ -210,11 +210,11 @@ This is the configuration used in our YAML file. It is possible to add multiple 
 A workflow can consist of one or more jobs. These jobs will run in their own environments and will therefore not share any data. However, it is possible to configure jobs to be dependent on the status of other jobs. To define jobs in our workflow we use the `jobs` keyword. The basic syntax for this keyword is:
 ```yml
 jobs:
-    <job1 id>:
-        <job1 specification>
-    <job2 id>:
-        <job2 specification>
-    ⋮
+  <job1 id>:
+    <job1 specification>
+  <job2 id>:
+    <job2 specification>
+  ⋮
 ```
 As id we can write any string containing only alphabetical characters, `-` or `_`. If you define multiple jobs inside the `jobs` environment, you must make sure they get unique ids. In our workflow we have defined a single job with the id `test`.
 
@@ -227,9 +227,9 @@ to our `<job specification>`. You can find a full list of possible OSs [here](ht
 To define the actions that should be executed in the job, we use the `steps` keyword. The general syntax for this keyword is:
 ```yml
 steps:
-    - <step 1 specification>
-    - <step 2 specification>
-    ⋮
+  - <step 1 specification>
+  - <step 2 specification>
+  ⋮
 ```
 The `<step specification>` also consists of multiple key-value pairs. There are three important keywords here:
 - `name` -  specify the name of the step
@@ -254,23 +254,23 @@ To install Python in our job environment we use the action [`actions/setup-pytho
 
 ```yml
 - name: Set up Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
+  uses: actions/setup-python@v2
+  with:
+    python-version: 3.8
 ```
 #### Multiple Python version
 If you want to support multiple Python versions (e.g. 3.8 and 3.7) and want to test all of them, it is possible to add
 ```yml
 strategy:
-      matrix:
-        python-version: [3.8, 3.7]
+  matrix:
+    python-version: [3.8, 3.7]
 ```
 to the job specification. Then we can modify the “Set Up Python” step to use the different versions:
 ```yml
 - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
-      with:
-        python-version: ${{ matrix.python-version }}
+  uses: actions/setup-python@v2
+  with:
+    python-version: ${{ matrix.python-version }}
 ```
 With this setup, GitHub will launch one job for each Python version. You can read more about the `strategy` and `matrix` keywords [here](https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstrategymatrix).
 
